@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Виталий Арцыбашев](https://up.htmlacademy.ru/javascript/9/user/78617).
-* Наставник: `Неизвестно`.
+* Наставник: [Сандор "Пес" Клиган](http://i48.fastpic.ru/big/2013/0606/fa/21cdbd2c73091ddae02c3358923f21fa.jpg).
 
 ---
 
