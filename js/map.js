@@ -44,3 +44,45 @@ for (var i = 0; i < OFFER_COUNT; i++) {
   };
   offers.push(newOffer);
 }
+
+// Создание DOM Элемента
+
+var fragment = document.createDocumentFragment();
+
+for (i = 0; i < OFFER_COUNT; i++) {
+  var newElement = document.createElement('div');
+  var newPicture = document.createElement('img');
+
+  newElement.className = 'pin';
+  newElement.style.left = offers[i].location.x + 'px';
+  newElement.style.top = offers[i].location.y + 'px';
+
+  newPicture.className = 'rounded';
+  newPicture.src = offers[i].author.avatar;
+  newPicture.width = 40;
+  newPicture.height = 40;
+
+  newElement.appendChild(newPicture);
+
+  fragment.appendChild(newElement);
+}
+
+var tokioMap = document.querySelector('.tokyo__pin-map');
+tokioMap.appendChild(fragment);
+
+var exampleElement = offers[0];
+
+var lodgeTemplate = document.querySelector('#lodge-template').content.cloneNode(true);
+
+lodgeTemplate.querySelector('.lodge__title').textContent = exampleElement.offer.title;
+lodgeTemplate.querySelector('.lodge__address').textContent = exampleElement.offer.address;
+lodgeTemplate.querySelector('.lodge__price').textContent = exampleElement.offer.price + '&#x20bd;/ночь';
+
+lodgeTemplate.querySelector('.lodge__type').textContent =
+if (exampleElement.offer.type === 'flat') {
+  return 'Квартира';
+} else if (exampleElement.offer.type === 'bungalo') {
+    return 'Бунгало';
+} else if (exampleElement.offer.type === 'house') {
+  return 'Дом';
+}
