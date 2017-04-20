@@ -19,6 +19,9 @@ var getRandomInt = function (min, max) {
 // };
 
 for (var i = 0; i < OFFER_COUNT; i++) {
+  var locX = getRandomInt(300, 900);
+  var locY = getRandomInt(100, 500);
+
   var newOffer = {
     'author': {
       'avatar': 'img/avatars/user0' + (i + 1) + '.png',
@@ -26,9 +29,7 @@ for (var i = 0; i < OFFER_COUNT; i++) {
 
     'offer': {
       'title': offerTitles[i],
-      'address': (function () {
-        return newOffer.location.x + ', ' + newOffer.location.y;
-      })(),
+      'address': locX + ' ,' + locY,
       'price': getRandomInt(1000, 1000000),
       'type': offerTypes[getRandomInt(0, offerTypes.length - 1)],
       'rooms': getRandomInt(1, 5),
@@ -41,8 +42,8 @@ for (var i = 0; i < OFFER_COUNT; i++) {
     },
 
     'location': {
-      'x': getRandomInt(300, 900),
-      'y': getRandomInt(100, 500)
+      'x': locX,
+      'y': locY
     }
   };
   offers.push(newOffer);
@@ -78,7 +79,7 @@ var createOffer = function (obj) {
 
   lodgeTemplate.querySelector('.lodge__title').textContent = obj.offer.title;
   lodgeTemplate.querySelector('.lodge__address').textContent = obj.offer.address;
-  lodgeTemplate.querySelector('.lodge__price').textContent = obj.offer.price + '&#x20bd;/ночь';
+  lodgeTemplate.querySelector('.lodge__price').innerHTML = obj.offer.price + '&#x20bd;/ночь';
 
   var translateOfferType = function (elem) {
     if (elem === 'flat') {
@@ -97,13 +98,11 @@ var createOffer = function (obj) {
   lodgeTemplate.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
 
   var showFeatures = function (arr) {
-    var spans = '';
+    var codeFeatures = '';
     for (i = 0; i < arr.length; i++) {
-      var newFeature = document.createElement('span');
-      newFeature.className = 'feature__image feature__image--' + arr[i];
-      spans += newFeature;
+      codeFeatures += '<span class="feature__image feature__image--' + arr[i] + '"></span>';
     }
-    return spans;
+    return codeFeatures;
   };
 
   lodgeTemplate.querySelector('.lodge__features').innerHTML = showFeatures(obj.offer.features);
