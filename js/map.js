@@ -79,7 +79,7 @@ var createOffer = function (obj) {
 
   lodgeTemplate.querySelector('.lodge__title').textContent = obj.offer.title;
   lodgeTemplate.querySelector('.lodge__address').textContent = obj.offer.address;
-  lodgeTemplate.querySelector('.lodge__price').innerHTML = obj.offer.price + '&#x20bd;/ночь';
+  lodgeTemplate.querySelector('.lodge__price').innerHTML = obj.offer.price + ' Руб/ночь';
 
   var translateOfferType = function (elem) {
     if (elem === 'flat') {
@@ -117,7 +117,6 @@ var createOffer = function (obj) {
 var firstOffer = offers[0];
 
 var some = createOffer(firstOffer);
-
 
 var dialogPanel = document.querySelector('.dialog__panel');
 dialogPanel.innerHTML = '';
