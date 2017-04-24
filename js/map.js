@@ -60,9 +60,12 @@ for (i = 0; i < OFFER_COUNT; i++) {
   newElement.className = 'pin';
   newElement.style.left = offers[i].location.x + 'px';
   newElement.style.top = offers[i].location.y + 'px';
+  newElement.id = 'pin' + i;
+  newElement.setAttribute('value', i);
 
   newPicture.className = 'rounded';
   newPicture.src = offers[i].author.avatar;
+  newPicture.setAttribute('tabindex', 0);
   newPicture.width = 40;
   newPicture.height = 40;
 
@@ -74,12 +77,14 @@ for (i = 0; i < OFFER_COUNT; i++) {
 var tokioMap = document.querySelector('.tokyo__pin-map');
 tokioMap.appendChild(fragment);
 
-var createOffer = function (obj) {
-  var lodgeTemplate = document.querySelector('#lodge-template').content.cloneNode(true);
 
-  lodgeTemplate.querySelector('.lodge__title').textContent = obj.offer.title;
-  lodgeTemplate.querySelector('.lodge__address').textContent = obj.offer.address;
-  lodgeTemplate.querySelector('.lodge__price').innerHTML = obj.offer.price + ' Руб/ночь';
+var createOffer = function (obj) {
+
+  var lodgeTemplate = document.querySelector('#lodge-template').content.cloneNode(true);
+  var dialogCard = lodgeTemplate.querySelector('.dialog__panel');
+  dialogCard.querySelector('.lodge__title').textContent = obj.offer.title;
+  dialogCard.querySelector('.lodge__address').textContent = obj.offer.address;
+  dialogCard.querySelector('.lodge__price').innerHTML = obj.offer.price + ' Руб/ночь';
 
   var translateOfferType = function (elem) {
     if (elem === 'flat') {
@@ -93,9 +98,9 @@ var createOffer = function (obj) {
     }
   };
 
-  lodgeTemplate.querySelector('.lodge__type').textContent = translateOfferType(obj.offer.type);
-  lodgeTemplate.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + obj.offer.guests + ' гостей в ' + obj.offer.rooms + ' комнатах';
-  lodgeTemplate.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+  dialogCard.querySelector('.lodge__type').textContent = translateOfferType(obj.offer.type);
+  dialogCard.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + obj.offer.guests + ' гостей в ' + obj.offer.rooms + ' комнатах';
+  dialogCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
 
   var showFeatures = function (arr) {
     var codeFeatures = '';
@@ -105,19 +110,65 @@ var createOffer = function (obj) {
     return codeFeatures;
   };
 
-  lodgeTemplate.querySelector('.lodge__features').innerHTML = showFeatures(obj.offer.features);
+  dialogCard.querySelector('.lodge__features').innerHTML = showFeatures(obj.offer.features);
 
-  lodgeTemplate.querySelector('.lodge__description').textContent = obj.offer.description;
+  dialogCard.querySelector('.lodge__description').textContent = obj.offer.description;
 
   document.querySelector('.dialog__title img[alt=Avatar]').src = obj.author.avatar;
 
-  return lodgeTemplate;
+  return dialogCard;
 };
 
 var firstOffer = offers[0];
 
-var some = createOffer(firstOffer);
+var renderDialogCard = function (element) {
+  var dialogPanel = document.querySelector('.dialog__panel');
+  dialogPanel.innerHTML = '';
+  dialogPanel.appendChild(element);
+};
 
-var dialogPanel = document.querySelector('.dialog__panel');
-dialogPanel.innerHTML = '';
-dialogPanel.appendChild(some);
+renderDialogCard(createOffer(firstOffer));
+
+// ///////////Module4-task1
+var pinsArray = tokioMap.querySelectorAll('.pin');
+var dialogBlock = document.querySelector('.dialog');
+var dialogClose = dialogBlock.querySelector('.dialog__close');
+
+var removeClassActive = function () {
+  for (i = 0; i < pinsArray.length; i++) {
+    pinsArray[i].classList.remove('pin--active');
+  }
+};
+
+var onCloseButtonClick = function () {
+  dialogBlock.classList.add('hidden');
+  removeClassActive();
+};
+
+var onPinClick = function (evt) {
+  removeClassActive();
+  if (evt.target.className === 'rounded') {
+    evt.target.parentNode.classList.toggle('pin--active');
+  }
+  dialogBlock.classList.remove('hidden');
+  var index = evt.target.parentNode.getAttribute('value');
+  renderDialogCard(createOffer(offers[index]));
+};
+
+// //////
+// var onKeyPress = function (evt) {
+//   if (evt.keycode === '13' && evt.target.className === 'rounded') {
+//     evt.target.parentNode.classList.toggle('pin--active');
+//     dialogBlock.classList.remove('hidden');
+//     var index = evt.target.parentNode.getAttribute('value');
+//     renderDialogCard(createOffer(offers[index]));
+//   }
+// };
+
+tokioMap.querySelector('#pin0 .rounded').focus();
+// console.dir(tokioMap.querySelector('#pin0 .rounded'));
+
+tokioMap.addEventListener('click', onPinClick);
+// tokioMap.addEventListener('keydown', onKeyPress);
+
+dialogClose.addEventListener('click', onCloseButtonClick);
