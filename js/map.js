@@ -9,7 +9,7 @@ window.renderMap = (function () {
   var offersArray = window.createData(OFFER_COUNT);
   window.createPin(offersArray);
 
-  var pinsArray = tokioMap.querySelectorAll('.pin');
+  var pinsArray = tokioMap.querySelectorAll('[id^="pin"]');
 
   // Убрать класс 'active' у пинов
   var removeClassActive = function () {

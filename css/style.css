@@ -639,6 +639,7 @@ select option:hover {
 }
 
 .pin__main {
+    z-index: 2;
     width: 75px;
     height: 94px;
 
