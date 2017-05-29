@@ -9,47 +9,10 @@ var mainPin = document.querySelector('.pin__main');
 var mapSurface = document.querySelector('.tokyo');
 var addressInput = document.getElementById('address');
 
+var offersArray = window.createData(OFFER_COUNT);
+window.createPin(offersArray);
+
 window.renderMap = (function () {
-  var offersArray = window.createData(OFFER_COUNT);
-  window.createPin(offersArray);
-
-  var pinsArray = tokioMap.querySelectorAll('[id^="pin"]');
-
-  // Убрать класс 'active' у пинов
-  var removeClassActive = function () {
-    for (var i = 0; i < pinsArray.length; i++) {
-      pinsArray[i].classList.remove('pin--active');
-    }
-  };
-
-  var showCard = function (evt) {
-    var index = evt.target.parentNode.getAttribute('value');
-    dialogBlock.classList.remove('hidden');
-    window.renderCard((offersArray[index]));
-  };
-
-  // Закрыть карточку
-  var onCloseButtonClick = function () {
-    dialogBlock.classList.add('hidden');
-    removeClassActive();
-  };
-
-  // Выбрать пин и отрисовать в карточке (клик)
-  var onPinClick = function (evt) {
-    removeClassActive();
-    if (evt.target.className === 'rounded') {
-      evt.target.parentNode.classList.toggle('pin--active');
-    }
-    showCard(evt);
-  };
-
-  // Выбрать пин и отрисовать в карточке (клавиатура)
-  var onKeyPress = function (evt) {
-    if (evt.keyCode === 13) {
-      evt.target.parentNode.classList.toggle('pin--active');
-      showCard(evt);
-    }
-  };
 
   var dragPin = function () {
     var mainPinWidth = mainPin.offsetWidth;
@@ -100,13 +63,9 @@ window.renderMap = (function () {
   };
 
   return {
-    onPinClick: onPinClick,
-    onKeyPress: onKeyPress,
-    onCloseButtonClick: onCloseButtonClick,
     dragPin: dragPin
   };
 })();
-
 
 //  Отобразим первое объявление по умолчанию
 
@@ -120,11 +79,20 @@ window.renderMap = (function () {
 tokioMap.querySelector('#pin0 .rounded').focus();
 
 // Добавляем обработчики для пинов
-tokioMap.addEventListener('click', window.renderMap.onPinClick);
-tokioMap.addEventListener('keydown', window.renderMap.onKeyPress);
+tokioMap.addEventListener('click', function (evt) {
+  window.showCard.showDescr(evt, offersArray);
+});
+
+tokioMap.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    window.showCard.showDescr(evt, offersArray);
+  }
+});
 
 // Активируем функцию, которая добаляет обработчики ДЛЯ ПЕРЕМЕЩИНИЯ ПИНА
 window.renderMap.dragPin();
 
 // Добавляем обработчик для закрытия карточки
-dialogClose.addEventListener('click', window.renderMap.onCloseButtonClick);
+dialogClose.addEventListener('click', function () {
+  window.showCard.hideDescr();
+});

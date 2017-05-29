@@ -14,6 +14,12 @@ window.useForm = (function () {
   var roomNumber = formContent.querySelector('#room_number');
   var guestsCount = formContent.querySelector('#capacity');
 
+  var timeValues = ['12', '13', '14'];
+  var roomsValues = ['1', '2', '100'];
+  var capacityValues = ['0', '3', '3'];
+  var houseTypeValues = ['Квартира', 'Лачуга', 'Дворец'];
+  var priceValues = ['1000', '0', '10000'];
+
   //      Валидация заголовка
   var validateHeadline = function () {
     if (headline.value.length < 30 || headline.value.length > 100) {
@@ -32,45 +38,19 @@ window.useForm = (function () {
     housePrice.setAttribute('style', 'border : 1px solid #d9d9d3');
   };
 
-  //   Связка время заезда и выезда
-  var changeTimeIn = function () {
-    var index = timeArrive.selectedIndex;
-    timeLeft.selectedIndex = index;
+  var syncValues = function (element, value) {
+    element.value = value;
   };
 
-  var changeTimeOut = function () {
-    var index = timeLeft.selectedIndex;
-    timeArrive.selectedIndex = index;
-  };
+  window.synchronizeFields(timeArrive, timeLeft, timeValues, timeValues, syncValues);
 
-  //   Связка тип жилья и стоимость
-  var changeSelectHouse = function () {
-    switch (houseType.value) {
-      case 'Квартира':
-        housePrice.value = 1000;
-        break;
-      case 'Лачуга':
-        housePrice.value = 0;
-        break;
-      case 'Дворец':
-        housePrice.value = 10000;
-        break;
-    }
-  };
+  window.synchronizeFields(timeLeft, timeArrive, timeValues, timeValues, syncValues);
 
-  var changeSelectRooms = function () {
-    switch (roomNumber.selectedIndex) {
-      case 0:
-        guestsCount.selectedIndex = 1;
-        break;
-      case 1:
-        guestsCount.selectedIndex = 0;
-        break;
-      case 2:
-        guestsCount.selectedIndex = 0;
-        break;
-    }
-  };
+  window.synchronizeFields(houseType, housePrice, houseTypeValues, priceValues, syncValues);
+
+  window.synchronizeFields(housePrice, houseType, priceValues, houseTypeValues, syncValues);
+
+  window.synchronizeFields(roomNumber, guestsCount, roomsValues, capacityValues, syncValues);
 
   var validateForm = function (evt) {
     var formElement = evt.target;
@@ -80,18 +60,6 @@ window.useForm = (function () {
         break;
       case (housePrice):
         validatePrice();
-        break;
-      case (houseType):
-        changeSelectHouse();
-        break;
-      case (roomNumber):
-        changeSelectRooms();
-        break;
-      case (timeArrive):
-        changeTimeIn();
-        break;
-      case (timeLeft):
-        changeTimeOut();
         break;
     }
   };
