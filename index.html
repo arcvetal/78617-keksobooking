@@ -137,16 +137,16 @@
             <div class="form__element">
               <label for="room_number">Кол-во комнат</label>
               <select id="room_number">
-                <option selected>1 комната</option>
-                <option>2 комнаты</option>
-                <option>100 комнат</option>
+                <option value="1"selected>1 комната</option>
+                <option value="2">2 комнаты</option>
+                <option value="100">100 комнат</option>
               </select>
             </div>
             <div class="form__element">
               <label for="capacity">Количество мест</label>
               <select id="capacity">
-                <option>для 3 гостей</option>
-                <option selected>не для гостей</option>
+                <option value="3">для 3 гостей</option>
+                <option  value="0"selected>не для гостей</option>
               </select>
             </div>
           </div>
@@ -274,7 +274,11 @@
 </script>
 <script type="text/javascript" src="js/pin.js">
 </script>
+<script type="text/javascript" src="js/synchronize-fields.js">
+</script>
 <script type="text/javascript" src="js/form.js">
+</script>
+<script type="text/javascript" src="js/show-card.js">
 </script>
 <script type="text/javascript" src="js/map.js">
 </script>
